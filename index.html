@@ -57,7 +57,7 @@
 
     <main class="content">
         <section id="home" class="hero">
-            <div class="hero-left" data-aos="fade-right">
+            <div class="hero-left">
                 <div class="terminal-window">
                     <div class="terminal-header">
                         <span></span><span></span><span></span>
@@ -81,7 +81,7 @@
                     <a href="#projects" class="btn secondary">View Projects</a>
                 </div>
             </div>
-            <div class="hero-right" data-aos="fade-left">
+            <div class="hero-right">
                 <div class="cyber-card">
                     <div class="card-header">SYSTEM STATUS</div>
                     <div class="status-item"><span>Name:</span><strong>Peter Kimwe</strong></div>
@@ -122,12 +122,8 @@
                 <div class="skill"><span>Figma</span><div class="skill-bar"><div class="skill-progress" data-width="85"></div></div></div>
                 <div class="skill"><span>Cybersecurity</span><div class="skill-bar"><div class="skill-progress" data-width="80"></div></div></div>
                 <div class="skill"><span>IT Support</span><div class="skill-bar"><div class="skill-progress" data-width="96"></div></div></div>
-
             </div>
         </section>
-
-
-        <!-- Experience Section -->
 
         <section id="experience" class="experience">
             <div class="section-header" data-aos="fade-up">
@@ -178,7 +174,7 @@
             </div>
             <div class="project-grid">
                 <div class="project-card"><h3>Greenhouse ML System</h3><p>Machine learning solution for classifying greenhouse environments.</p><a href="#">View Project →</a></div>
-                <div class="project-card"><h3>Tutor Website</h3><p>Modern responsive educational website with secure contact functionality.</p><a href="https://github.com/six1821/Tutor-website">View Project →</a></div>
+                <div class="project-card"><h3>Tutor Website</h3><p>Modern responsive educational website with secure contact functionality.</p><a href="https://github.com/six1821/Tutor-website" target="_blank">View Project →</a></div>
                 <div class="project-card"><h3>Portfolio Website</h3><p>Modern cyber-inspired portfolio built using HTML, CSS and JavaScript.</p><a href="#">View Project →</a></div>
             </div>
         </section>
@@ -188,7 +184,7 @@
                 <h2>CONTACT TERMINAL</h2>
                 <div class="line"></div>
             </div>
-            <form class="terminal-form" action="https://formspree.io/f/xojznpad" method="POST">
+            <form class="terminal-form" id="contactForm" action="https://formspree.io/f/xojznpad" method="POST">
                 <label>> Name</label>
                 <input type="text" id="contactName" name="name" placeholder="Enter username" required>
                 <label>> Email</label>

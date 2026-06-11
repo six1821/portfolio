@@ -1,242 +1,299 @@
-// ================= INIT AOS =================
-AOS.init({
-    duration: 1000,
-    once: true
-});
-
-// ================= PARTICLES BACKGROUND =================
-if (window.particlesJS) {
-    particlesJS("particles-js", {
-        particles: {
-            number: { value: 60 },
-            color: { value: "#00ff88" },
-            shape: { type: "circle" },
-            opacity: { value: 0.3 },
-            size: { value: 3 },
-            line_linked: {
-                enable: true,
-                distance: 150,
-                color: "#00ff88",
-                opacity: 0.2,
-                width: 1
-            },
-            move: {
-                enable: true,
-                speed: 2
-            }
-        }
+// Wait for DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // ================= INIT AOS =================
+    AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 100
     });
-}
 
-// ================= MOBILE SIDEBAR TOGGLE =================
-const menuBtn = document.querySelector(".mobile-menu-btn");
-const sidebar = document.querySelector(".sidebar");
-
-if (menuBtn && sidebar) {
-    menuBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("active");
-    });
-}
-
-// ================= CURSOR GLOW EFFECT =================
-const cursor = document.querySelector(".cursor-glow");
-
-if (cursor) {
-    document.addEventListener("mousemove", (e) => {
-        cursor.style.left = e.clientX + "px";
-        cursor.style.top = e.clientY + "px";
-    });
-}
-
-// ================= SCROLL PROGRESS BAR =================
-const progressBar = document.querySelector(".progress-bar");
-
-if (progressBar) {
-    window.addEventListener("scroll", () => {
-        const scrollTop = window.scrollY;
-        const docHeight = document.body.scrollHeight - window.innerHeight;
-        const progress = (scrollTop / docHeight) * 100;
-        progressBar.style.width = progress + "%";
-    });
-}
-
-// ================= TYPING EFFECT =================
-const typingText = document.getElementById("typing-text");
-
-if (typingText) {
-    const roles = [
-        "Web Developer",
-        "WordPress Specialist",
-        "UI/UX Designer",
-        "IT Support Technician"
-    ];
-
-    let roleIndex = 0;
-    let charIndex = 0;
-
-    function typeEffect() {
-        if (charIndex < roles[roleIndex].length) {
-            typingText.textContent += roles[roleIndex].charAt(charIndex);
-            charIndex++;
-            setTimeout(typeEffect, 100);
-        } else {
-            setTimeout(eraseEffect, 1500);
-        }
-    }
-
-    function eraseEffect() {
-        if (charIndex > 0) {
-            typingText.textContent = roles[roleIndex].substring(0, charIndex - 1);
-            charIndex--;
-            setTimeout(eraseEffect, 50);
-        } else {
-            roleIndex = (roleIndex + 1) % roles.length;
-            setTimeout(typeEffect, 500);
-        }
-    }
-
-    document.addEventListener("DOMContentLoaded", typeEffect);
-}
-
-// ================= SKILL BAR ANIMATION =================
-const skills = document.querySelectorAll(".skill-progress");
-
-if (skills.length > 0) {
-    const skillObserver = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const bar = entry.target;
-                const width = bar.getAttribute("data-width");
-                bar.style.width = width + "%";
-                skillObserver.unobserve(bar);
+    // ================= PARTICLES BACKGROUND =================
+    if (window.particlesJS) {
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 60 },
+                color: { value: "#00ff88" },
+                shape: { type: "circle" },
+                opacity: { value: 0.3 },
+                size: { value: 3 },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#00ff88",
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2
+                }
             }
         });
-    }, { threshold: 0.5 });
+    }
 
-    skills.forEach(skill => skillObserver.observe(skill));
-}
+    // ================= MOBILE SIDEBAR TOGGLE =================
+    const menuBtn = document.querySelector(".mobile-menu-btn");
+    const sidebar = document.querySelector(".sidebar");
 
-// ================= GSAP ANIMATIONS =================
-if (window.gsap) {
-    // Hero animations
-    gsap.from(".hero-left", {
-        x: -100,
-        opacity: 0,
-        duration: 1
+    if (menuBtn && sidebar) {
+        menuBtn.addEventListener("click", function(e) {
+            e.stopPropagation();
+            sidebar.classList.toggle("active");
+            
+            // Change icon
+            const icon = menuBtn.querySelector("i");
+            if (sidebar.classList.contains("active")) {
+                icon.classList.remove("fa-bars");
+                icon.classList.add("fa-times");
+            } else {
+                icon.classList.remove("fa-times");
+                icon.classList.add("fa-bars");
+            }
+        });
+    }
+
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener("click", function(e) {
+        if (window.innerWidth <= 900 && sidebar && sidebar.classList.contains("active")) {
+            if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+                sidebar.classList.remove("active");
+                const icon = menuBtn.querySelector("i");
+                if (icon) {
+                    icon.classList.remove("fa-times");
+                    icon.classList.add("fa-bars");
+                }
+            }
+        }
     });
 
-    gsap.from(".hero-right", {
-        x: 100,
-        opacity: 0,
-        duration: 1
-    });
+    // ================= CURSOR GLOW EFFECT =================
+    const cursor = document.querySelector(".cursor-glow");
+    
+    if (cursor && window.innerWidth > 768) {
+        document.addEventListener("mousemove", function(e) {
+            cursor.style.left = e.clientX + "px";
+            cursor.style.top = e.clientY + "px";
+        });
+    }
 
-    gsap.from(".sidebar", {
-        x: -200,
-        opacity: 0,
-        duration: 1
-    });
+    // ================= SCROLL PROGRESS BAR =================
+    const progressBar = document.querySelector(".progress-bar");
+    
+    if (progressBar) {
+        window.addEventListener("scroll", function() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.body.scrollHeight - window.innerHeight;
+            const progress = (scrollTop / docHeight) * 100;
+            progressBar.style.width = progress + "%";
+        });
+    }
 
-    // Experience cards animation
-    const experienceCards = document.querySelectorAll(".exp-card");
+    // ================= TYPING EFFECT =================
+    const typingText = document.getElementById("typing-text");
+    
+    if (typingText) {
+        const roles = [
+            "Web Developer",
+            "WordPress Specialist",
+            "UI/UX Designer",
+            "IT Support Technician"
+        ];
+        
+        let roleIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        
+        function typeEffect() {
+            const currentRole = roles[roleIndex];
+            
+            if (isDeleting) {
+                typingText.textContent = currentRole.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingText.textContent = currentRole.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            
+            if (!isDeleting && charIndex === currentRole.length) {
+                isDeleting = true;
+                setTimeout(typeEffect, 2000);
+                return;
+            }
+            
+            if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                roleIndex = (roleIndex + 1) % roles.length;
+                setTimeout(typeEffect, 500);
+                return;
+            }
+            
+            const speed = isDeleting ? 50 : 100;
+            setTimeout(typeEffect, speed);
+        }
+        
+        typeEffect();
+    }
 
-    if (experienceCards.length > 0) {
-        gsap.from(experienceCards, {
-            opacity: 0,
-            y: 60,
-            duration: 0.9,
-            stagger: 0.2,
+    // ================= SKILL BAR ANIMATION =================
+    const skills = document.querySelectorAll(".skill-progress");
+    
+    if (skills.length > 0) {
+        const skillObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    const bar = entry.target;
+                    const width = bar.getAttribute("data-width");
+                    bar.style.width = width + "%";
+                    skillObserver.unobserve(bar);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        skills.forEach(function(skill) {
+            skillObserver.observe(skill);
+        });
+    }
+
+    // ================= GSAP ANIMATIONS (FIXED) =================
+    if (window.gsap) {
+        // Set initial states
+        gsap.set(".hero-left", { opacity: 0, x: -100 });
+        gsap.set(".hero-right", { opacity: 0, x: 100 });
+        gsap.set(".sidebar", { opacity: 0, x: -200 });
+        
+        // Animate to visible states
+        gsap.to(".hero-left", {
+            opacity: 1,
+            x: 0,
+            duration: 1,
             ease: "power3.out"
         });
-    }
-}
-
-// ================= ACTIVE NAV LINK ON SCROLL =================
-const sections = document.querySelectorAll("section");
-const navLinks = document.querySelectorAll(".sidebar nav ul li a");
-
-if (sections.length > 0 && navLinks.length > 0) {
-    window.addEventListener("scroll", () => {
-        let current = "";
-
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            if (scrollY >= sectionTop - 200) {
-                current = section.getAttribute("id");
-            }
+        
+        gsap.to(".hero-right", {
+            opacity: 1,
+            x: 0,
+            duration: 1,
+            ease: "power3.out"
         });
-
-        navLinks.forEach(link => {
-            link.classList.remove("active");
-            if (link.getAttribute("href") === "#" + current) {
-                link.classList.add("active");
-            }
+        
+        gsap.to(".sidebar", {
+            opacity: 1,
+            x: 0,
+            duration: 1,
+            ease: "power3.out"
         });
-    });
-}
-
-// ================= SMOOTH SCROLL =================
-document.querySelectorAll("a[href^='#']").forEach(anchor => {
-    anchor.addEventListener("click", function (e) {
-        e.preventDefault();
-
-        const target = document.querySelector(this.getAttribute("href"));
-
-        if (target) {
-            target.scrollIntoView({
-                behavior: "smooth"
+        
+        // Animate experience cards when they come into view
+        const experienceCards = document.querySelectorAll(".exp-card");
+        
+        if (experienceCards.length > 0) {
+            // First ensure they're visible
+            gsap.set(experienceCards, { opacity: 0, y: 60 });
+            
+            // Create scroll trigger for each card
+            experienceCards.forEach(function(card, index) {
+                gsap.to(card, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.9,
+                    delay: index * 0.2,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 85%",
+                        toggleActions: "play none none none"
+                    }
+                });
             });
         }
+    }
 
-        // Close mobile sidebar if open
-        if (sidebar && window.innerWidth <= 900) {
-            sidebar.classList.remove("active");
-        }
+    // Fallback: Ensure all elements are visible
+    setTimeout(function() {
+        const heroLeft = document.querySelector(".hero-left");
+        const heroRight = document.querySelector(".hero-right");
+        const expCards = document.querySelectorAll(".exp-card");
+        
+        if (heroLeft) heroLeft.style.opacity = "1";
+        if (heroRight) heroRight.style.opacity = "1";
+        
+        expCards.forEach(function(card) {
+            card.style.opacity = "1";
+            card.style.visibility = "visible";
+        });
+    }, 500);
+
+    // ================= ACTIVE NAV LINK ON SCROLL =================
+    const sections = document.querySelectorAll("section");
+    const navLinks = document.querySelectorAll(".sidebar nav ul li a");
+    
+    if (sections.length > 0 && navLinks.length > 0) {
+        window.addEventListener("scroll", function() {
+            let current = "";
+            const scrollPosition = window.scrollY + 200;
+            
+            sections.forEach(function(section) {
+                const sectionTop = section.offsetTop;
+                const sectionBottom = sectionTop + section.offsetHeight;
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                    current = section.getAttribute("id");
+                }
+            });
+            
+            navLinks.forEach(function(link) {
+                link.classList.remove("active");
+                const href = link.getAttribute("href");
+                if (href === "#" + current) {
+                    link.classList.add("active");
+                }
+            });
+        });
+    }
+
+    // ================= SMOOTH SCROLL =================
+    document.querySelectorAll("a[href^='#']").forEach(function(anchor) {
+        anchor.addEventListener("click", function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute("href");
+            if (targetId === "#") return;
+            
+            const target = document.querySelector(targetId);
+            
+            if (target) {
+                target.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }
+            
+            // Close mobile sidebar if open
+            if (sidebar && window.innerWidth <= 900 && sidebar.classList.contains("active")) {
+                sidebar.classList.remove("active");
+                const icon = menuBtn.querySelector("i");
+                if (icon) {
+                    icon.classList.remove("fa-times");
+                    icon.classList.add("fa-bars");
+                }
+            }
+        });
     });
-});
 
-// ================= CONTACT FORM HANDLER =================
-const contactForm = document.getElementById("contactForm");
-const formStatus = document.getElementById("formStatus");
-
-if (contactForm) {
-    contactForm.addEventListener("submit", function(e) {
-        e.preventDefault();
-        
-        const name = document.getElementById("contactName").value;
-        const email = document.getElementById("contactEmail").value;
-        const message = document.getElementById("contactMessage").value;
-        
-        if (name && email && message) {
+    // ================= CONTACT FORM HANDLER =================
+    const contactForm = document.getElementById("contactForm");
+    const formStatus = document.getElementById("formStatus");
+    
+    if (contactForm && formStatus) {
+        contactForm.addEventListener("submit", function(e) {
+            // Don't prevent default for Formspree - let it handle submission
+            // Just show success message
             formStatus.textContent = "✓ Message transmitted successfully! I'll get back to you soon.";
             formStatus.style.color = "#00ff88";
-            contactForm.reset();
             
-            // Clear status after 5 seconds
-            setTimeout(() => {
+            setTimeout(function() {
                 formStatus.textContent = "";
             }, 5000);
-        } else {
-            formStatus.textContent = "✗ Error: Please fill in all fields before transmitting.";
-            formStatus.style.color = "#ff5f56";
-            
-            setTimeout(() => {
-                formStatus.textContent = "";
-            }, 3000);
-        }
-    });
-}
-
-// ================= FORCE EXPERIENCE SECTION VISIBILITY =================
-const forceExpVisibility = () => {
-    const cards = document.querySelectorAll(".exp-card");
-    cards.forEach(card => {
-        card.style.opacity = "1";
-        card.style.visibility = "visible";
-        card.style.transform = "translateY(0px)";
-    });
-};
-
-window.addEventListener("load", forceExpVisibility);
-setTimeout(forceExpVisibility, 200);
+        });
+    }
+});
